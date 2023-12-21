@@ -3,6 +3,8 @@ const path = require('path');
 const fs = require('fs')
 const generateMarkdown = require('./utils/generateMarkdown.js')
 
+
+
 // TODO: Include packages needed for this application
 
 
@@ -43,7 +45,7 @@ const questions = [
     {
         type: 'input',
         name: 'contributions',
-        message: 'Where can people contribute to this project?'
+        message: 'Who contributed to this project?'
     },
     {
         type: 'input',
@@ -68,14 +70,17 @@ const questions = [
 // TODO: Create a function to write README file
 function writeToFile(input) {
     var readMeText = `# ${input.title}
-##Table of Contents 
-[Description](#description)
-[Installation](#installation)
-[Usage](#usage)
-[License](#license)
-[Contributing](#contributing)
-[Testing](#testing)
-[Questions](#questions)
+## License
+${renderLicenseBadge(input.license)}
+## Table of Contents 
+- [Description](#description)
+- [Installation](#installation)
+- [Usage](#usage)
+- [License](#license)
+- [Contributing](#contributing)
+- [Testing](#testing)
+- [Questions](#questions)
+
 
 ## Description 
 ${input.description}
@@ -83,8 +88,6 @@ ${input.description}
 ${input.installation}
 ## Usage
 ${input.usage}
-## License
-${input.license}
 ## Contributing
 ${input.contributions}
 ## Testing
@@ -93,8 +96,19 @@ ${input.test}
 (${input.github})
 ${input.email}`
 
-    console.log(readMeText)
+    fs.writeFileSync("./output/README.md",readMeText)
 
+}
+function renderLicenseBadge(license){
+  if(license==="MIT"){
+    return "[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)"
+  } 
+  if(license==="Apache"){
+    return "[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)"
+  } 
+  if(license==="GPL"){
+    return "[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)"
+  }
 }
 
 // TODO: Create a function to initialize app
